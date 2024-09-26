@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors'; // Import CORS
 import authRoutes from './routes/authRoutes.js';
+import task from './routes/task.js'
 import mongoose from 'mongoose';
 
 // Load environment variables from .env file
@@ -23,6 +24,7 @@ app.use(express.json());
 
 // Routes
 app.use('/', authRoutes);
+app.use('/api/task',task)
 
 // Listen on the specified port
 const PORT = process.env.PORT;

@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
 
 var taskSchema = new mongoose.Schema({
-  userId: {
-    type: Schema.Types.ObjectId,  // Reference to Users collection
-    required: true,
-    ref: 'User'
-  },
+  // userId: {
+  //   type: mongoose.Schema.Types.ObjectId,  // Reference to Users collection
+  //   required: true,
+  //   ref: 'User'
+  // },
   title: {
     type: String,
     required: true  // Task title or short description
