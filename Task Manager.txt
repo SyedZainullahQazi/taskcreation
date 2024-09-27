@@ -1,1 +1,6 @@
-First Commit to make a fullstack Task manager Application
+Simpliest Ever Todo App.
+
+Pull the repo and a simple npm install on frontend and backend would do.
+
+cd frontend -> npm run dev
+cd backend -> npm start or npm run dev (for nodemon)
