@@ -129,3 +129,36 @@ export const deleteTask = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const updateTask = async (req, res) => {
+  try {
+    const { id } = req.params; // Extract the task ID from the request parameters
+    const { title, description, priority, dueDate } = req.body; // Extract the new task values from the request body
+
+    // Format the dueDate using Day.js
+    const formattedDueDate = dueDate ? dayjs(dueDate).format('YYYY-MM-DD') : null;
+
+    // Find the task by ID and update it with the new values
+    const updatedTask = await Task.findByIdAndUpdate(
+      id,
+      {
+        title,
+        description,
+        priority,
+        dueDate: formattedDueDate, // Use the formatted date here
+      },
+      { new: true, runValidators: true } // Options to return the updated document and run validation
+    );
+
+    // If the task is not found, return a 404 error
+    if (!updatedTask) {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+
+    // If the update is successful, return the updated task
+    return res.status(200).json({ message: 'Task updated successfully', task: updatedTask });
+  } catch (error) {
+    // Handle any other errors
+    return res.status(400).json({ message: error.message });
+  }
+};

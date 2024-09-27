@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import TaskStatusSwitch from './TaskStatusSwtich';
 import { deleteTask } from '../../../Apis/Task';
 
-const TaskColumns = ({ handleRefreshData }) => {
+const TaskColumns = ({ handleRefreshData ,handleModalState,handleRecord}) => {
   const handleDelete = async (id) => {
     try {
       await deleteTask(id);
@@ -68,7 +68,7 @@ const TaskColumns = ({ handleRefreshData }) => {
       title: 'Created At',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      sorter: true, // Enable sorting for createdAt
+      sorter: true,
       render: (date) => dayjs(date).format('YYYY-MM-DD'),
     },
     {
@@ -85,7 +85,11 @@ const TaskColumns = ({ handleRefreshData }) => {
           <Button 
             type="link" 
             icon={<EditOutlined />} 
-            onClick={() => {/* Handle edit logic here */}} 
+            onClick={() => {
+              handleRecord(record);
+              setTimeout(()=>{
+                handleModalState(true)},500)
+              }} 
           />
           <Popconfirm
             title="Are you sure to delete this task?"

@@ -1,23 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Row, Col, Space, DatePicker, message, Select } from 'antd';
 import dayjs from 'dayjs';
-import { createTask } from '../../../Apis/Task';
+import { createTask, updateTask } from '../../../Apis/Task';
 
 const { Option } = Select; // Destructure Option from Select
 
-const TaskForm = ({ form, handleModalState,handleRefreshData }) => {
-  const [loading, setLoading] = useState(false);
+const TaskForm = ({ form, handleModalState ,record,handleRefreshData}) => {
 
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const vals = {
+      dueDate :record?.dueDate? dayjs(record?.dueDate):null,
+      description : record?.description,
+      priority: record?.priority,
+      title : record?.title,
+    }
+    form.setFieldsValue(vals);
+    console.log(record);
+   
+  }, [record])
   const onFinish = async (values) => {
     setLoading(true);
     try {
-      if(values.dueDate){
-        values['dueDate'] = dayjs(values.dueDate).format('YYYY-MM-DD');
+      if(record){
+        const response = await updateTask(record._id,values);
       }
-      
-      const response = await createTask(values  );
+      else{
+        const response = await createTask(values  );
+      }
       message.success('Task successfully created!');
-      handleRefreshData();
+      
       form.resetFields();
       handleModalState(false);
     } catch (error) {
@@ -25,6 +37,8 @@ const TaskForm = ({ form, handleModalState,handleRefreshData }) => {
       message.error('An error occurred while creating the task');
     } finally {
       setLoading(false);
+            handleRefreshData();
+
     }
   };
 

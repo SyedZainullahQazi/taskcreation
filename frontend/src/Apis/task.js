@@ -27,3 +27,7 @@ export const getTaskById = async (id) => {
 export const deleteTask = async (id) => {
     return await axios.delete(`${API_URL}/api/task/${id}`);
 };
+
+export const updateTask = async (id, updatedData) => {
+    return await axios.patch(`${API_URL}/api/task/${id}`, updatedData);
+};

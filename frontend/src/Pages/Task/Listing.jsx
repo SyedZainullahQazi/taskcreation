@@ -10,7 +10,12 @@ const TaskListing = () => {
     const [sortOrder, setSortOrder] = useState(null);
     const [filters, setFilters] = useState({ status: null, priority: null });
 
+    const [record,setRecord] = useState(null);
+    const handleRecord = (state)=>{
+      setRecord(state);
+    }
     const fetchTasks = async () => {
+      console.log("FETCHING TASKSSSSSS");
         const params = {
             sortOrder,
             filters
@@ -45,7 +50,7 @@ const TaskListing = () => {
     return (
         <AppLayout toolkit={<Button size='small' onClick={() => handleModalState(true)}>Add</Button>}>
             <Table
-                columns={TaskColumns({ handleRefreshData })}
+                columns={TaskColumns({ handleRefreshData,handleModalState,handleRecord })}
                 dataSource={tasks}
                 onChange={(pagination, filters, sorter) => {
                     setSortOrder(sorter.order);
@@ -53,7 +58,8 @@ const TaskListing = () => {
                 }}
                 rowKey="_id" // Assuming _id is the unique identifier for your tasks
             />
-            <TaskModal visible={isModal} handleModalState={handleModalState} handleRefreshData={handleRefreshData}/>
+
+            <TaskModal visible={isModal} handleModalState={handleModalState} handleRefreshData={handleRefreshData} record={record}/>
 
         </AppLayout>
     );
