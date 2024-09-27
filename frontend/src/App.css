@@ -40,3 +40,13 @@
 .read-the-docs {
   color: #888;
 }
+
+.ant-btn-primary {
+  background-color: orange !important; /* Change primary button background color to orange */
+  border-color: orange !important; /* Change primary button border color to orange */
+}
+
+.ant-card {
+  background-color: black; /* Ensure the card background is black */
+  color: white; /* Ensure the text color is white */
+}

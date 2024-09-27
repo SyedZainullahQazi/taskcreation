@@ -105,13 +105,14 @@ const TaskForm = ({ form, handleModalState ,record,handleRefreshData}) => {
         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Form.Item>
             <Space style={{ float: 'right' }}>
-              <Button onClick={() => handleModalState(false)}>
+              {/* <Button onClick={() => handleModalState(false)}>
                 Close
-              </Button>
+              </Button> */}
               <Button 
                 loading={loading} 
                 type="primary" 
                 htmlType="submit"
+                style={{color:'white',backgroundColor:'black'}}
               >
                 Submit
               </Button>

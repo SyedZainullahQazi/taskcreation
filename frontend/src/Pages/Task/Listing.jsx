@@ -4,6 +4,7 @@ import { listingTask } from '../../Apis/Task';
 import TaskColumns from './Listing/TaskColumns'
 import AppLayout from '../Components/AppLayout';
 import TaskModal from  './Listing/TaskModal';
+import { PlusOutlined } from '@ant-design/icons';
 const TaskListing = () => {
     const [isModal, setIsModal] = useState(false);
     const [tasks, setTasks] = useState([]);
@@ -48,7 +49,17 @@ const TaskListing = () => {
       };
 
     return (
-        <AppLayout toolkit={<Button size='small' onClick={() => handleModalState(true)}>Add</Button>}>
+        <AppLayout title={'TODO - LISTVIEW'}
+        toolkit={<Button
+            size='small'
+            type='primary'
+            className='mr-10'
+            onClick={() => handleModalState(true)}
+            style={{ backgroundColor: 'black', borderColor: 'black', color: 'white' }}
+            icon={<PlusOutlined style={{ color: 'white' }} />}
+        >
+            Add 
+        </Button>}>
             <Table
                 columns={TaskColumns({ handleRefreshData,handleModalState,handleRecord })}
                 dataSource={tasks}

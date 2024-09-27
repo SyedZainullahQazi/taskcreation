@@ -4,12 +4,14 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import TaskStatusSwitch from './TaskStatusSwtich';
 import { deleteTask } from '../../../Apis/Task';
+import SearchDateFilter from './SearchDateFilter';
+import SearchFilter from './SearchFilter';
 
-const TaskColumns = ({ handleRefreshData ,handleModalState,handleRecord}) => {
+const TaskColumns = ({ handleRefreshData, handleModalState, handleRecord }) => {
   const handleDelete = async (id) => {
     try {
       await deleteTask(id);
-      handleRefreshData()
+      handleRefreshData();
     } catch (error) {
       console.error('Failed to delete task:', error);
     }
@@ -20,11 +22,31 @@ const TaskColumns = ({ handleRefreshData ,handleModalState,handleRecord}) => {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+        <SearchFilter 
+          placeholder="title"
+          selectedKeys={selectedKeys}
+          setSelectedKeys={setSelectedKeys}
+          confirm={confirm}
+          clearFilters={clearFilters}
+          handleRefreshData={handleRefreshData}
+        />
+      ),
     },
     {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+        <SearchFilter 
+          placeholder="description"
+          selectedKeys={selectedKeys}
+          setSelectedKeys={setSelectedKeys}
+          confirm={confirm}
+          clearFilters={clearFilters}
+          handleRefreshData={handleRefreshData}
+        />
+      ),
     },
     {
       title: 'Status',
@@ -60,23 +82,32 @@ const TaskColumns = ({ handleRefreshData ,handleModalState,handleRecord}) => {
       dataIndex: 'dueDate',
       key: 'dueDate',
       sorter: true,
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+        <SearchDateFilter 
+          selectedKeys={selectedKeys}
+          setSelectedKeys={setSelectedKeys}
+          confirm={confirm}
+          clearFilters={clearFilters}
+          handleRefreshData={handleRefreshData}
+        />
+      ),
       render: (date) => 
         date ? dayjs(date).format('YYYY-MM-DD') : 
-        <Tag color={'red'}>{'NO DUE DATE'}</Tag>
+        <Tag color={'red'}>{'NO DUE DATE'}</Tag>,
     },
     {
       title: 'Created At',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      sorter: true,
+      // sorter: true,
       render: (date) => dayjs(date).format('YYYY-MM-DD'),
     },
-    {
-      title: 'Updated At',
-      dataIndex: 'updatedAt',
-      key: 'updatedAt',
-      render: (date) => dayjs(date).format('YYYY-MM-DD'),
-    },
+    // {
+    //   title: 'Updated At',
+    //   dataIndex: 'updatedAt',
+    //   key: 'updatedAt',
+    //   render: (date) => dayjs(date).format('YYYY-MM-DD'),
+    // },
     {
       title: 'Actions',
       key: 'actions',
@@ -87,9 +118,10 @@ const TaskColumns = ({ handleRefreshData ,handleModalState,handleRecord}) => {
             icon={<EditOutlined />} 
             onClick={() => {
               handleRecord(record);
-              setTimeout(()=>{
-                handleModalState(true)},500)
-              }} 
+              setTimeout(() => {
+                handleModalState(true);
+              }, 500);
+            }} 
           />
           <Popconfirm
             title="Are you sure to delete this task?"

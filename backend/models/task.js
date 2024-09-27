@@ -1,11 +1,6 @@
 import mongoose from 'mongoose';
 
 var taskSchema = new mongoose.Schema({
-  // userId: {
-  //   type: mongoose.Schema.Types.ObjectId,  // Reference to Users collection
-  //   required: true,
-  //   ref: 'User'
-  // },
   title: {
     type: String,
     required: true  // Task title or short description
@@ -25,8 +20,8 @@ var taskSchema = new mongoose.Schema({
     default: 'medium'
   },
   dueDate: {
-    type: Date,  // Stores the due date and time in a single field,
-    default:null
+    type: String,  // Store only date as a string (YYYY-MM-DD)
+    default: null
   },
   createdAt: {
     type: Date,
@@ -39,5 +34,5 @@ var taskSchema = new mongoose.Schema({
 });
 
 // Export the model
-const Task =  mongoose.model('Task', taskSchema);
+const Task = mongoose.model('Task', taskSchema);
 export default Task;
