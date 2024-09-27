@@ -118,9 +118,7 @@ const TaskColumns = ({ handleRefreshData, handleModalState, handleRecord }) => {
             icon={<EditOutlined />} 
             onClick={() => {
               handleRecord(record);
-              setTimeout(() => {
                 handleModalState(true);
-              }, 500);
             }} 
           />
           <Popconfirm

@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Modal, } from 'antd';
 import TaskForm from './TaskForm';
 
-const TaskModal = ({ visible, handleModalState, handleRefreshData, record }) => {
+const TaskModal = ({ visible, handleModalState, handleRefreshData, record,handleRecord }) => {
   const [form] = Form.useForm();
 
  
@@ -13,6 +13,9 @@ const TaskModal = ({ visible, handleModalState, handleRefreshData, record }) => 
       onCancel={() => {
         form.resetFields();
         handleModalState(false);
+        if(record){
+          handleRecord(null);
+        }
         // handleItemRecord(null);
       }}
       footer={null}
@@ -21,6 +24,7 @@ const TaskModal = ({ visible, handleModalState, handleRefreshData, record }) => 
         form={form}
         handleModalState={handleModalState}
         handleRefreshData={handleRefreshData}
+        handleRecord={handleRecord}
         record={record}
       />
     </Modal>

@@ -5,31 +5,35 @@ import { createTask, updateTask } from '../../../Apis/Task';
 
 const { Option } = Select; // Destructure Option from Select
 
-const TaskForm = ({ form, handleModalState ,record,handleRefreshData}) => {
+const TaskForm = ({ form, handleModalState, record, handleRefreshData, handleRecord }) => {
 
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    const vals = {
-      dueDate :record?.dueDate? dayjs(record?.dueDate):null,
-      description : record?.description,
-      priority: record?.priority,
-      title : record?.title,
-    }
-    form.setFieldsValue(vals);
     console.log(record);
-   
+    if (record) {
+      const vals = {
+        dueDate: record?.dueDate ? dayjs(record?.dueDate) : null,
+        description: record?.description,
+        priority: record?.priority,
+        title: record?.title,
+      }
+      form.setFieldsValue(vals);
+    }
   }, [record])
   const onFinish = async (values) => {
     setLoading(true);
     try {
-      if(record){
-        const response = await updateTask(record._id,values);
+      if (record) {
+        const response = await updateTask(record._id, values);
       }
-      else{
-        const response = await createTask(values  );
+      else {
+        const response = await createTask(values);
       }
       message.success('Task successfully created!');
-      
+
+      if (record) {
+        handleRecord(null);
+      }
       form.resetFields();
       handleModalState(false);
     } catch (error) {
@@ -37,7 +41,7 @@ const TaskForm = ({ form, handleModalState ,record,handleRefreshData}) => {
       message.error('An error occurred while creating the task');
     } finally {
       setLoading(false);
-            handleRefreshData();
+      handleRefreshData();
 
     }
   };
@@ -108,11 +112,11 @@ const TaskForm = ({ form, handleModalState ,record,handleRefreshData}) => {
               {/* <Button onClick={() => handleModalState(false)}>
                 Close
               </Button> */}
-              <Button 
-                loading={loading} 
-                type="primary" 
+              <Button
+                loading={loading}
+                type="primary"
                 htmlType="submit"
-                style={{color:'white',backgroundColor:'black'}}
+                style={{ color: 'white', backgroundColor: 'black' }}
               >
                 Submit
               </Button>
