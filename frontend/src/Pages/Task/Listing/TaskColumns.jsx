@@ -1,8 +1,20 @@
-// src/components/TaskColumns.js
 import React from 'react';
-import { Tag } from 'antd';
+import { Tag, Button, Popconfirm } from 'antd';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import dayjs from 'dayjs';
+import TaskStatusSwitch from './TaskStatusSwtich';
+import { deleteTask } from '../../../Apis/Task';
 
-const TaskColumns = () => {
+const TaskColumns = ({ handleRefreshData }) => {
+  const handleDelete = async (id) => {
+    try {
+      await deleteTask(id);
+      handleRefreshData()
+    } catch (error) {
+      console.error('Failed to delete task:', error);
+    }
+  };
+
   return [
     {
       title: 'Title',
@@ -18,16 +30,25 @@ const TaskColumns = () => {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: (status) => (
-        <Tag color={status === 'completed' ? 'green' : status === 'in-progress' ? 'orange' : 'red'}>
-          {status.toUpperCase()}
-        </Tag>
+      filters: [
+        { text: 'Pending', value: 'pending' },
+        { text: 'Completed', value: 'completed' },
+      ],
+      onFilter: (value, record) => record.status.includes(value),
+      render: (status, record) => (
+        <TaskStatusSwitch record={record} handleRefreshData={handleRefreshData} />
       ),
     },
     {
       title: 'Priority',
       dataIndex: 'priority',
       key: 'priority',
+      filters: [
+        { text: 'Low', value: 'low' },
+        { text: 'Medium', value: 'medium' },
+        { text: 'High', value: 'high' },
+      ],
+      onFilter: (value, record) => record.priority.includes(value),
       render: (priority) => (
         <Tag color={priority === 'high' ? 'red' : priority === 'medium' ? 'orange' : 'green'}>
           {priority.toUpperCase()}
@@ -38,19 +59,48 @@ const TaskColumns = () => {
       title: 'Due Date',
       dataIndex: 'dueDate',
       key: 'dueDate',
-      render: (date) => new Date(date).toLocaleString(), // Format the date
+      sorter: true,
+      render: (date) => 
+        date ? dayjs(date).format('YYYY-MM-DD') : 
+        <Tag color={'red'}>{'NO DUE DATE'}</Tag>
     },
     {
       title: 'Created At',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (date) => new Date(date).toLocaleString(), // Format the date
+      sorter: true, // Enable sorting for createdAt
+      render: (date) => dayjs(date).format('YYYY-MM-DD'),
     },
     {
       title: 'Updated At',
       dataIndex: 'updatedAt',
       key: 'updatedAt',
-      render: (date) => new Date(date).toLocaleString(), // Format the date
+      render: (date) => dayjs(date).format('YYYY-MM-DD'),
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (text, record) => (
+        <>
+          <Button 
+            type="link" 
+            icon={<EditOutlined />} 
+            onClick={() => {/* Handle edit logic here */}} 
+          />
+          <Popconfirm
+            title="Are you sure to delete this task?"
+            onConfirm={() => handleDelete(record._id)} // Assuming _id is the task ID
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button 
+              type="link" 
+              danger 
+              icon={<DeleteOutlined />} 
+            />
+          </Popconfirm>
+        </>
+      ),
     },
   ];
 };

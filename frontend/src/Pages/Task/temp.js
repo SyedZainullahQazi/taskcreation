@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Table } from 'antd';
+import { Table } from 'antd';
 import { listingTask } from '../../Apis/Task';
 import TaskColumns from './Listing/TaskColumns'
 import AppLayout from '../Components/AppLayout';
-import TaskModal from  './Listing/TaskModal';
 const TaskListing = () => {
     const [isModal, setIsModal] = useState(false);
     const [tasks, setTasks] = useState([]);
@@ -53,7 +52,7 @@ const TaskListing = () => {
                 }}
                 rowKey="_id" // Assuming _id is the unique identifier for your tasks
             />
-            <TaskModal visible={isModal} handleModalState={handleModalState} handleRefreshData={handleRefreshData}/>
+            <TaskModal visible={isModal} handleModalState={handleModalState} />
 
         </AppLayout>
     );

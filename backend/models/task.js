@@ -16,7 +16,7 @@ var taskSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'in-progress', 'completed'],
+    enum: ['pending', 'completed'],
     default: 'pending'
   },
   priority: {
@@ -25,7 +25,8 @@ var taskSchema = new mongoose.Schema({
     default: 'medium'
   },
   dueDate: {
-    type: Date  // Stores the due date and time in a single field
+    type: Date,  // Stores the due date and time in a single field,
+    default:null
   },
   createdAt: {
     type: Date,

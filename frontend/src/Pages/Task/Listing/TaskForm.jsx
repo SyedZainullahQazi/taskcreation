@@ -5,23 +5,19 @@ import { createTask } from '../../../Apis/Task';
 
 const { Option } = Select; // Destructure Option from Select
 
-const TaskForm = ({ form, handleModalState }) => {
+const TaskForm = ({ form, handleModalState,handleRefreshData }) => {
   const [loading, setLoading] = useState(false);
 
   const onFinish = async (values) => {
     setLoading(true);
     try {
-      console.log(dayjs(values.dueDate).format('YYYY-MM-DD'))
-      // Format the dueDate using dayjs
-      values['dueDate'] = dayjs(values.dueDate).format('YYYY-MM-DD');
+      if(values.dueDate){
+        values['dueDate'] = dayjs(values.dueDate).format('YYYY-MM-DD');
+      }
       
-      
-      // Simulate an API call (replace this with your actual API call)
-      const response = await createTask(values);
-      console.log('THE RECEIVED RESPONSE IS ',response);
+      const response = await createTask(values  );
       message.success('Task successfully created!');
-      
-      // Reset the form fields
+      handleRefreshData();
       form.resetFields();
       handleModalState(false);
     } catch (error) {

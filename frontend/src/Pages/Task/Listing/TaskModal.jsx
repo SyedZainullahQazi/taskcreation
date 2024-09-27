@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Modal, } from 'antd';
 import TaskForm from './TaskForm';
 
-const TaskModal = ({ visible, handleModalState}) => {
+const TaskModal = ({ visible, handleModalState,handleRefreshData}) => {
   const [form] = Form.useForm();
   return (
     <Modal
@@ -18,6 +18,7 @@ const TaskModal = ({ visible, handleModalState}) => {
       <TaskForm
         form={form}
         handleModalState={handleModalState}
+        handleRefreshData={handleRefreshData}
       />
     </Modal>
   );
